@@ -348,6 +348,35 @@ public class CombatTag extends JavaPlugin {
                     }
                 }
                 return true;
+            } else if (args[0].equalsIgnoreCase("force")) {
+                if (!sender.hasPermission("combattag.force")) {
+                    sender.sendMessage("[CombatTag] You don't have permission to force someone into combat");
+                    return true;
+                }
+                Player toForce = null;
+                if (args.length > 1) {
+                    String toForceName = args[1];
+                    toForce = Bukkit.getPlayerExact(toForceName);
+                    if (toForce == null) {
+                        sender.sendMessage("[CombatTag] " + toForceName + " isn't a valid player name");
+                        return true;
+                    }
+                } else if (sender instanceof Player) {
+                    toForce = (Player) sender;
+                } else {
+                    sender.sendMessage("Please specify a player to force into combat");
+                    return true;
+                }
+                if (isInCombat(toForce.getUniqueId())) {
+                    tagged.put(toForce.getUniqueId(), PvPTimeout(60));
+                    if (!toForce.equals(sender)) sender.sendMessage("You have been forced into combat for one minute");
+                    sender.sendMessage("Sucessfuly forced " + toForce.getName() + " into combat.");
+                    return true;
+                } else {
+                    removeTagged(toForce.getUniqueId());
+                    if (!toForce.equals(sender)) sender.sendMessage("You have been force out of combat");
+                    sender.sendMessage("Sucessful forced " + toForce.getName() + " out of combat.");
+                }
             } else {
                 sender.sendMessage(ChatColor.RED + "[CombatTag] That is not a valid command!");
                 return true;
