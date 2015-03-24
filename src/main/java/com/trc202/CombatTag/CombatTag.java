@@ -41,7 +41,7 @@ import com.trc202.CombatTagListeners.NoPvpPlayerListener;
 import com.trc202.settings.Settings;
 import com.trc202.settings.SettingsHelper;
 import com.trc202.settings.SettingsLoader;
-import import com.trc202.tasks.ActionBarTask;
+import com.trc202.tasks.ActionBarTask;
 
 import static com.trc202.CombatTag.Reflection.*;
 
@@ -62,7 +62,7 @@ public class CombatTag extends JavaPlugin {
     public final NoPvpEntityListener entityListener = new NoPvpEntityListener(this);
     private final NoPvpBlockListener blockListener = new NoPvpBlockListener(this);
     private final CombatTagCommandPrevention commandPreventer = new CombatTagCommandPrevention(this);
-    private final ActionBarTask actionBarTask;
+    private ActionBarTask actionBarTask;
 
     private int npcNumber;
 
