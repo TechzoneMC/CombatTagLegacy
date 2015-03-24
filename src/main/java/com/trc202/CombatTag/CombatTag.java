@@ -2,6 +2,7 @@ package com.trc202.CombatTag;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -36,6 +38,8 @@ import com.trc202.CombatTagListeners.NoPvpPlayerListener;
 import com.trc202.settings.Settings;
 import com.trc202.settings.SettingsHelper;
 import com.trc202.settings.SettingsLoader;
+
+import static com.trc202.CombatTag.Reflection.*;
 
 public class CombatTag extends JavaPlugin {
 
@@ -87,11 +91,13 @@ public class CombatTag extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        for (NPC npc : npcm.getNPCs()) {
-            UUID uuid = npcm.getNPCIdFromEntity(npc.getEntity());
-            despawnNPC(uuid, NpcDespawnReason.PLUGIN_DISABLED);
-            if (isDebugEnabled()) {
-                log.info("[CombatTag] Disabling npc with ID of: " + uuid);
+        if (npcm != null) {
+            for (NPC npc : npcm.getNPCs()) {
+                UUID uuid = npcm.getNPCIdFromEntity(npc.getEntity());
+                despawnNPC(uuid, NpcDespawnReason.PLUGIN_DISABLED);
+                if (isDebugEnabled()) {
+                    log.info("[CombatTag] Disabling npc with ID of: " + uuid);
+                }
             }
         }
         //Just in case...
@@ -367,7 +373,7 @@ public class CombatTag extends JavaPlugin {
                     sender.sendMessage("Please specify a player to force into combat");
                     return true;
                 }
-                if (isInCombat(toForce.getUniqueId())) {
+                if (!isInCombat(toForce.getUniqueId())) {
                     tagged.put(toForce.getUniqueId(), PvPTimeout(60));
                     if (!toForce.equals(sender)) sender.sendMessage("You have been forced into combat for one minute");
                     sender.sendMessage("Sucessfuly forced " + toForce.getName() + " into combat.");
@@ -457,7 +463,7 @@ public class CombatTag extends JavaPlugin {
                     emptyArmorStack[x] = airItem;
                 }
                 target.getInventory().setArmorContents(emptyArmorStack);
-                target.setHealth(0);
+                setHealth(target, healthCheck(source.getHealth()));
             } else {
                 copyTo(target, source);
             }
@@ -480,13 +486,7 @@ public class CombatTag extends JavaPlugin {
         target.setExhaustion(source.getExhaustion());
         target.setSaturation(source.getSaturation());
         target.setFireTicks(source.getFireTicks());
-        if (target instanceof HumanEntity) {
-            HumanEntity humanTarget = (HumanEntity) target;
-            double healthSet = healthCheck(source.getHealth());
-            humanTarget.setHealth((float) healthSet);
-        } else {
-            log.info("[CombatTag] An error has occurred! Target is not a HumanEntity!");
-        }
+        setHealth(target, healthCheck(source.getHealth()));
     }
 
     public double healthCheck(double health) {
@@ -506,13 +506,22 @@ public class CombatTag extends JavaPlugin {
     public static boolean isVersionSupported() {
         return NPCLib.isSupported();
     }
-    
-    public static final Field ENTITY_PLAYER_INVULNERABLE_TICKS_FIELD = Reflection.makeField(Reflection.getNmsClass("EntityPlayer"), "invulnerableTicks");
-    
+
+    public static final Field ENTITY_PLAYER_INVULNERABLE_TICKS_FIELD = Reflection.makeField(getNmsClass("EntityPlayer"), "invulnerableTicks");
+    public static final Method ENTITY_LIVING_SET_HEALTH_METHOD = Reflection.makeMethod(getNmsClass("EntityLiving"), "setHealth", float.class);
+
     public static void setInvulnerableTicks(Entity bukkitEntity, int invulnerableTicks) { //Entity.setNoDamageTicks() doesn't set EntityPlayer.invulnerableTicks
         Object entity = Reflection.getHandle(bukkitEntity);
-        if (Reflection.getNmsClass("EntityPlayer").isInstance(entity)) {
+        if (getNmsClass("EntityPlayer").isInstance(entity)) {
             Reflection.setField(ENTITY_PLAYER_INVULNERABLE_TICKS_FIELD, entity, invulnerableTicks);
         }
+    }
+    /*
+     * EntityLiving.setHealth() calls die() if the entity is a player.
+     * EntityPlayer.die() tries to close any open inventories, causing the offline player to throw an exception.
+     */
+    public static void setHealth(LivingEntity bukkitEntity, double health) {
+        Object entity = Reflection.getHandle(bukkitEntity);
+        Reflection.callMethod(ENTITY_LIVING_SET_HEALTH_METHOD, entity, (float)health);
     }
 }

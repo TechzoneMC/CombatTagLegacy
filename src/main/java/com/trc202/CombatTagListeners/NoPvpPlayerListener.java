@@ -81,7 +81,7 @@ public class NoPvpPlayerListener implements Listener {
                     NPC npc = plugin.spawnNpc(quitPlr, quitPlr.getLocation());
                     Player npcPlayer = (Player) npc.getEntity();
                     plugin.copyContentsNpc(npc, quitPlr);
-                    npcPlayer.setHealth(plugin.healthCheck(quitPlr.getHealth()));
+                    CombatTag.setHealth(npcPlayer, plugin.healthCheck(quitPlr.getHealth()));
                     quitPlr.getWorld().createExplosion(quitPlr.getLocation(), -1); //Create the smoke effect
                     CombatTag.setInvulnerableTicks(npcPlayer, 0);
                     if (plugin.settings.getNpcDespawnTime() > 0) {

@@ -12,7 +12,7 @@ public class Reflection {
         String className = "net.minecraft.server." + getVersion() + "." + name;
         return getClass(className);
     }
-    
+
     public static Class<?> getCbClass(String name) {
         String className = "org.bukkit.craftbukkit." + getVersion() + "." + name;
         return getClass(className);

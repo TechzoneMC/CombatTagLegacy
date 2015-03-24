@@ -16,6 +16,7 @@ import java.util.UUID;
 public class NPCManager {
     public NPCManager(CombatTag plugin) {
         this.plugin = plugin;
+        getRegistry();
     }
 
     private final CombatTag plugin;
