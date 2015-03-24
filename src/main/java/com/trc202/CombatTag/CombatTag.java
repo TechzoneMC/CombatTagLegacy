@@ -3,10 +3,12 @@ package com.trc202.CombatTag;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import net.techcable.npclib.NPC;
@@ -29,6 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.trc202.CombatTagEvents.NpcDespawnEvent;
 import com.trc202.CombatTagEvents.NpcDespawnReason;
 import com.trc202.CombatTagListeners.CombatTagCommandPrevention;
@@ -38,6 +41,7 @@ import com.trc202.CombatTagListeners.NoPvpPlayerListener;
 import com.trc202.settings.Settings;
 import com.trc202.settings.SettingsHelper;
 import com.trc202.settings.SettingsLoader;
+import import com.trc202.tasks.ActionBarTask;
 
 import static com.trc202.CombatTag.Reflection.*;
 
@@ -48,7 +52,7 @@ public class CombatTag extends JavaPlugin {
     public Settings settings;
     public static final Logger log = Logger.getLogger("Minecraft");
     public NPCManager npcm;
-    private HashMap<UUID, Long> tagged;
+    private ConcurrentHashMap<UUID, Long> tagged;
     private static final String mainDirectory = "plugins/CombatTag";
     private static final List<String> SUBCOMMANDS = ImmutableList.of("reload", "wipe", "command");
     private static final List<String> COMMAND_SUBCOMMANDS = ImmutableList.of("add", "remove");
@@ -58,6 +62,7 @@ public class CombatTag extends JavaPlugin {
     public final NoPvpEntityListener entityListener = new NoPvpEntityListener(this);
     private final NoPvpBlockListener blockListener = new NoPvpBlockListener(this);
     private final CombatTagCommandPrevention commandPreventer = new CombatTagCommandPrevention(this);
+    private final ActionBarTask actionBarTask;
 
     private int npcNumber;
 
@@ -112,7 +117,8 @@ public class CombatTag extends JavaPlugin {
             setEnabled(false);
             return;
         }
-        tagged = new HashMap<UUID, Long>();
+        this.actionBarTask = new ActionBarTask(this);
+        tagged = new ConcurrentHashMap<UUID, Long>();
         settings = new SettingsLoader().loadSettings(settingsHelper, this.getDescription().getVersion());
         npcm = new NPCManager(this);
         PluginManager pm = getServer().getPluginManager();
@@ -126,15 +132,15 @@ public class CombatTag extends JavaPlugin {
     }
 
     public long getRemainingTagTime(UUID uuid) {
-        if (tagged.get(uuid) == null) {
+        Long tag = tagged.get(uuid);
+        if (tag == null) {
             return -1;
         }
-        return (tagged.get(uuid) - System.currentTimeMillis());
+        return tag - System.currentTimeMillis();
     }
 
     public boolean addTagged(Player player) {
         if (player.isOnline()) {
-            tagged.remove(player.getUniqueId());
             tagged.put(player.getUniqueId(), PvPTimeout(getTagDuration()));
             return true;
         }
@@ -142,7 +148,7 @@ public class CombatTag extends JavaPlugin {
     }
 
     public boolean inTagged(UUID name) {
-        return tagged.containsKey(name);
+        return isInCombat(name); //Should be exactly the same (old impl wouldn't remove if not tagged)
     }
 
     public long removeTagged(UUID name) {
@@ -498,6 +504,10 @@ public class CombatTag extends JavaPlugin {
         }
         return health;
     }
+    
+    public ImmutableSet<UUID> listTagged() {
+        return ImmutableSet.copyOf(tagged.keySet());
+    }
 
     public SettingsHelper getSettingsHelper() {
         return this.settingsHelper;
@@ -524,4 +534,5 @@ public class CombatTag extends JavaPlugin {
         Object entity = Reflection.getHandle(bukkitEntity);
         Reflection.callMethod(ENTITY_LIVING_SET_HEALTH_METHOD, entity, (float)health);
     }
+    
 }
