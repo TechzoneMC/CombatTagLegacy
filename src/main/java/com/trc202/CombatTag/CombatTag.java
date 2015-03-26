@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import net.techcable.npclib.NPC;
@@ -63,7 +64,7 @@ public class CombatTag extends JavaPlugin {
     private final NoPvpBlockListener blockListener = new NoPvpBlockListener(this);
     private final CombatTagCommandPrevention commandPreventer = new CombatTagCommandPrevention(this);
     private ActionBarTask actionBarTask;
-
+    private final Statistics stats = new Statistics(this);
     private int npcNumber;
 
     public CombatTag() {
@@ -129,7 +130,12 @@ public class CombatTag extends JavaPlugin {
         pm.registerEvents(entityListener, this);
         pm.registerEvents(commandPreventer, this);
         pm.registerEvents(blockListener, this);
-
+        stats.activate(new Supplier<Boolean>() {
+            @Override
+            public Boolean get() {
+                return settings.isInstaKill();
+            }
+        });
         log.info("[" + getDescription().getName() + "]" + " has loaded with a tag time of " + settings.getTagDuration() + " seconds");
     }
 

@@ -2,7 +2,7 @@ package com.trc202.tasks;
 
 import java.util.UUID;
 
-import com.trc202.CombatTag.ActionBar;
+import com.trc202.libs.techcable.ActionBar;
 import com.trc202.CombatTag.CombatTag;
 
 import org.bukkit.Bukkit;
