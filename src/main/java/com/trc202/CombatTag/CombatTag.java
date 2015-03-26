@@ -105,6 +105,7 @@ public class CombatTag extends JavaPlugin {
                 }
             }
         }
+        actionBarTask.cancel();
         //Just in case...
         log.info("[CombatTag] Disabled");
     }
@@ -118,6 +119,7 @@ public class CombatTag extends JavaPlugin {
             return;
         }
         this.actionBarTask = new ActionBarTask(this);
+        actionBarTask.runTaskTimerAsynchronously(this, 3, 10); //Every 1/2 a second
         tagged = new ConcurrentHashMap<UUID, Long>();
         settings = new SettingsLoader().loadSettings(settingsHelper, this.getDescription().getVersion());
         npcm = new NPCManager(this);
@@ -131,7 +133,7 @@ public class CombatTag extends JavaPlugin {
         log.info("[" + getDescription().getName() + "]" + " has loaded with a tag time of " + settings.getTagDuration() + " seconds");
     }
 
-    public long getRemainingTagTime(UUID uuid) {
+    public long  getRemainingTagTime(UUID uuid) {
         Long tag = tagged.get(uuid);
         if (tag == null) {
             return -1;
@@ -366,6 +368,7 @@ public class CombatTag extends JavaPlugin {
                     return true;
                 }
                 Player toForce = null;
+                int secondsToTag = 60;
                 if (args.length > 1) {
                     String toForceName = args[1];
                     toForce = Bukkit.getPlayerExact(toForceName);
@@ -379,9 +382,20 @@ public class CombatTag extends JavaPlugin {
                     sender.sendMessage("Please specify a player to force into combat");
                     return true;
                 }
+                if (args.length > 2) {
+                    try {
+                        secondsToTag = Integer.parseInt(args[2]);
+                    } catch (NumberFormatException ex) {
+                        secondsToTag = -1; //Indicates to error check we have an invalid number
+                    }
+                    if (secondsToTag < 0 || secondsToTag > 1000) {
+                        sender.sendMessage(args[2] + " isnt a valid number of seconds to tag");
+                        return true;
+                    }
+                }
                 if (!isInCombat(toForce.getUniqueId())) {
-                    tagged.put(toForce.getUniqueId(), PvPTimeout(60));
-                    if (!toForce.equals(sender)) sender.sendMessage("You have been forced into combat for one minute");
+                    tagged.put(toForce.getUniqueId(), PvPTimeout(secondsToTag));
+                    if (!toForce.equals(sender)) toForce.sendMessage("You have been forced into combat for ");
                     sender.sendMessage("Sucessfuly forced " + toForce.getName() + " into combat.");
                     return true;
                 } else {

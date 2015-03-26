@@ -51,7 +51,7 @@ public class ActionBar {
         
         public void sendTo(Player p, ActionBar bar) {
             if (getProtocolVersion(p) < 16) return;
-            Object baseComponent = serialize(bar.getText());
+            Object baseComponent = serializeOld(bar.getText()); //According to wiki.vg only old style formatting is accepted for ActionBars
             Object packet = callConstructor(makeConstructor(getNmsClass("PacketPlayOutChat"), getNmsClass("IChatBaseComponent"), int.class), baseComponent, 2);
             sendPacket(p, packet);
         }
@@ -81,13 +81,13 @@ public class ActionBar {
         }
         
         public void sendTo(Player p, ActionBar bar) {
-            Object baseComponent = serialize(bar.getText());
-            Object packet = callConstructor(makeConstructor(getNmsClass("PacketPlayOutChat"), getNmsClass("IChatBaseComponent"), int.class), baseComponent, 2);
+            Object baseComponent = serializeOld(bar.getText()); //According to wiki.vg only old style formatting is accepted for ActionBars
+            Object packet = callConstructor(makeConstructor(getNmsClass("PacketPlayOutChat"), getNmsClass("IChatBaseComponent"), byte.class), baseComponent, (byte) 2);
             sendPacket(p, packet);
         }
         
         public static boolean isSupported() {
-            return makeConstructor(getNmsClass("PacketPlayOutChat"), getNmsClass("IChatBaseComponent"), int.class) != null;
+            return makeConstructor(getNmsClass("PacketPlayOutChat"), getNmsClass("IChatBaseComponent"), byte.class) != null;
         }
     }
     
@@ -99,7 +99,12 @@ public class ActionBar {
         Object connection = getField(playerConnectionField, handle);
         callMethod(makeMethod(getNmsClass("PlayerConnection"), "sendPacket", getNmsClass("Packet")), connection, packet);
     }
-    
+
+    private static Object serializeOld(String text) { //Serialize to raw text (needed for ActionBars)
+        Class<?> chatComponentTextClass = getNmsClass("ChatComponentText");
+        return callConstructor(makeConstructor(chatComponentTextClass, String.class), text);
+    }
+
     private static Object serialize(String text) { //Serialize to IChatBaseComponent 
         Class<?> craftChatMessageClass = getCbClass("util.CraftChatMessage");
         Object baseComponentArray = callMethod(makeMethod(craftChatMessageClass, "fromString", String.class), null, text);

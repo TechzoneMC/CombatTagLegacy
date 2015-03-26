@@ -13,32 +13,42 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ActionBarTask extends BukkitRunnable {
     private final CombatTag plugin;
     private final int maxTagTime;
-    public static final String BAR_CHAR = "■";
+    public static final char BAR_CHAR = ':';
     public ActionBarTask(CombatTag plugin) {
         this.plugin = plugin;
         this.maxTagTime = plugin.settings.getTagDuration();
-        runTaskTimerAsynchronously(plugin, 3, 10); //Every 10th of a second
     }
     
     @Override
     public void run() { //Based of MCMMO    
         for (UUID playerId : plugin.listTagged()) {
-            StringBuilder text = new StringBuilder("Time left in combat: ");
-            double tagPercentage = (plugin.getRemainingTagTime(playerId) / maxTagTime) * 100.0D;
-            int fullDisplay = 20;
-            int coloredDisplay = (int) Math.ceil(fullDisplay * (tagPercentage / 100.0D));
-            int grayDisplay = fullDisplay - coloredDisplay;
-            text.append(ChatColor.GREEN);
-            for (int i = 0; i < coloredDisplay; i++) {
-                text.append(BAR_CHAR);
-            }
-            text.append(ChatColor.GRAY);
-            for (int i = 0; i < grayDisplay; i++) {
-                text.append(BAR_CHAR);
-            }
-            ActionBar bar = new ActionBar(text.toString());
             Player player = Bukkit.getPlayer(playerId);
-            if (player != null && player.isOnline()) bar.sendTo(player);
+            int timeRemaining = (int) plugin.getRemainingTagTime(playerId) / 1000; //Time remaining in seconds
+            displayActionBarCoutdown("CombatTag:", timeRemaining, maxTagTime, player);
         }
+    }
+
+    private static void displayActionBarCoutdown(String prefix, int timeRemaining, int maxTime, Player player) {
+        if (timeRemaining < 0) return;
+        StringBuilder text = new StringBuilder();
+        text.append(prefix);
+        text.append(" ");
+        int fullDisplay = 60;
+        int timeIncompleted = (int) (fullDisplay * (Math.min(timeRemaining, maxTime) / ((double)maxTime))); //Thanks to Mr. BlobMan for the casting denominators to double fix
+        int timeCompleted = fullDisplay - timeIncompleted;
+        text.append(ChatColor.RED);
+        for (int i = 0; i < timeIncompleted; i++) {
+            text.append(BAR_CHAR);
+        }
+        text.append(ChatColor.GREEN);
+        for (int i = 0; i < timeCompleted; i++) {
+            text.append(BAR_CHAR);
+        }
+        text.append(ChatColor.RESET);
+        text.append(' ');
+        text.append(timeRemaining);
+        text.append("s");
+        ActionBar bar = new ActionBar(text.toString());
+        if (player != null && player.isOnline()) bar.sendTo(player);
     }
 }
