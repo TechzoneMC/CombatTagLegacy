@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import com.google.common.base.Supplier;
 import net.techcable.npclib.NPC;
 import net.techcable.npclib.NPCLib;
 import org.bukkit.Bukkit;

@@ -1,11 +1,11 @@
 package com.trc202.CombatTag;
 
+import com.google.common.base.Supplier;
 import com.trc202.libs.Metrics;
 import com.trc202.libs.Metrics.Graph;
 import com.trc202.libs.Metrics.Plotter;
 
 import java.io.IOException;
-import java.util.function.Supplier;
 
 public class Statistics {
     public Statistics(CombatTag plugin) {
