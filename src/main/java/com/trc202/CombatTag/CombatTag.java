@@ -75,26 +75,6 @@ public class CombatTag extends JavaPlugin {
         npcNumber = 0;
     }
 
-    /**
-     * Change SL in NPCManager to:
-     *
-     * private class SL implements Listener {
-     *
-     * @SuppressWarnings("unused") public void disableNPCLib() { despawnAll();
-     * Bukkit.getServer().getScheduler().cancelTask(taskid); } }
-     */
-    /**
-     * Change NullSocket to:
-     *
-     * class NullSocket extends Socket { private final byte[] buffer = new
-     * byte[50];
-     *
-     * @Override public InputStream getInputStream() { return new
-     * ByteArrayInputStream(this.buffer); }
-     *
-     * @Override public OutputStream getOutputStream() { return new
-     * ByteArrayOutputStream(10); } }
-     */
     @Override
     public void onDisable() {
         if (npcm != null) {
