@@ -1,5 +1,7 @@
 package com.trc202.settings;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 
 public class Settings {
@@ -27,6 +29,9 @@ public class Settings {
     private boolean playerTag;
     private boolean blockCreativeTagging;
     private boolean blockFly;
+    @Getter
+    @Setter
+    private String tagDisplayMode;
 
     public Settings() {
         instaKill = false;
@@ -52,6 +57,7 @@ public class Settings {
         playerTag = true;
         blockCreativeTagging = true;
         blockFly = false;
+        tagDisplayMode = "actionBar";
     }
 
     public void setDebugEnabled(boolean debugEnabled) {

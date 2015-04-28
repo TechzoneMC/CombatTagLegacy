@@ -27,6 +27,7 @@ public class SettingsLoader {
     private static final String playerTag = "playerTag";
     private static final String blockCreativeTagging = "blockCreativeTagging";
     private static final String blockFlying = "blockFlying";
+    private static final String tagDisplayMode = "tagDisplayMode";
 
     public Settings loadSettings(SettingsHelper helper, String version) {
         settings = new Settings();
@@ -113,6 +114,9 @@ public class SettingsLoader {
         if (helper.getProperty(blockFlying) == null) {
             helper.setProperty(blockFlying, Boolean.toString(temp.blockFly()));
         }
+        if (helper.getProperty(tagDisplayMode) == null) {
+            helper.setProperty(tagDisplayMode, temp.getTagDisplayMode());
+        }
     }
 
     private boolean isLatestVersion(SettingsHelper helper, String vers) {
@@ -146,7 +150,8 @@ public class SettingsLoader {
                 && (helper.getProperty(mobTag) != null)
                 && (helper.getProperty(playerTag) != null)
                 && (helper.getProperty(blockCreativeTagging) != null)
-                && (helper.getProperty(blockFlying) != null);
+                && (helper.getProperty(blockFlying) != null)
+                && (helper.getProperty(tagDisplayMode) != null);
     }
 
     private void loadProperties(SettingsHelper helper) {
@@ -182,5 +187,6 @@ public class SettingsLoader {
         settings.setPlayerTag(Boolean.valueOf(helper.getProperty(playerTag)));
         settings.setBlockCreativeTagging(Boolean.valueOf(helper.getProperty(blockCreativeTagging)));
         settings.setBlockFly(Boolean.valueOf(helper.getProperty(blockFlying)));
+        settings.setTagDisplayMode(helper.getProperty(tagDisplayMode));
     }
 }

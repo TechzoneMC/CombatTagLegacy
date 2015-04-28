@@ -1,4 +1,4 @@
-package com.trc202.CombatTag;
+package com.trc202.libs.techcable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

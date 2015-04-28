@@ -3,15 +3,15 @@ package com.trc202.CombatTag;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.google.common.base.Supplier;
+import com.trc202.libs.techcable.OfflinePlayerLoader;
+import com.trc202.libs.techcable.Reflection;
 import net.techcable.npclib.NPC;
 import net.techcable.npclib.NPCLib;
 import org.bukkit.Bukkit;
@@ -26,7 +26,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.StringUtil;
@@ -42,9 +41,9 @@ import com.trc202.CombatTagListeners.NoPvpPlayerListener;
 import com.trc202.settings.Settings;
 import com.trc202.settings.SettingsHelper;
 import com.trc202.settings.SettingsLoader;
-import com.trc202.tasks.ActionBarTask;
+import com.trc202.tasks.UpdateDisplayTask;
 
-import static com.trc202.CombatTag.Reflection.*;
+import static com.trc202.libs.techcable.Reflection.*;
 
 public class CombatTag extends JavaPlugin {
 
@@ -63,7 +62,7 @@ public class CombatTag extends JavaPlugin {
     public final NoPvpEntityListener entityListener = new NoPvpEntityListener(this);
     private final NoPvpBlockListener blockListener = new NoPvpBlockListener(this);
     private final CombatTagCommandPrevention commandPreventer = new CombatTagCommandPrevention(this);
-    private ActionBarTask actionBarTask;
+    private UpdateDisplayTask actionBarTask;
     private final Statistics stats = new Statistics(this);
     private int npcNumber;
 
@@ -99,8 +98,8 @@ public class CombatTag extends JavaPlugin {
             setEnabled(false);
             return;
         }
-        this.actionBarTask = new ActionBarTask(this);
-        actionBarTask.runTaskTimerAsynchronously(this, 3, 10); //Every 1/2 a second
+        this.actionBarTask = new UpdateDisplayTask(this);
+        actionBarTask.runTaskTimer(this, 3, 10); //Every 1/2 a second
         tagged = new ConcurrentHashMap<UUID, Long>();
         settings = new SettingsLoader().loadSettings(settingsHelper, this.getDescription().getVersion());
         npcm = new NPCManager(this);

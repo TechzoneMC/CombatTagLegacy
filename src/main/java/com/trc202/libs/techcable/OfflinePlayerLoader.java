@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.trc202.CombatTag;
+package com.trc202.libs.techcable;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -32,8 +31,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import static com.trc202.CombatTag.Reflection.*;
-
 /**
  * Loads the data of offline players
  *
@@ -41,7 +38,7 @@ import static com.trc202.CombatTag.Reflection.*;
  *
  * @author Techcable
  */
-class OfflinePlayerLoader {
+public class OfflinePlayerLoader {
 
     /**
      * Returns the given players data
@@ -106,51 +103,51 @@ class OfflinePlayerLoader {
         Object interactManager = newPlayerInteractManager();
         Object worldServer = getWorldServer();
         Object profile = newGameProfile(id, name);
-        Class<?> entityPlayerClass = getNmsClass("EntityPlayer");
-        Constructor entityPlayerConstructor = makeConstructor(entityPlayerClass, getNmsClass("MinecraftServer"), getNmsClass("WorldServer"), getUtilClass("com.mojang.authlib.GameProfile"), getNmsClass("PlayerInteractManager"));
-        Object entityPlayer = callConstructor(entityPlayerConstructor, server, worldServer, profile, interactManager);
+        Class<?> entityPlayerClass = Reflection.getNmsClass("EntityPlayer");
+        Constructor entityPlayerConstructor = Reflection.makeConstructor(entityPlayerClass, Reflection.getNmsClass("MinecraftServer"), Reflection.getNmsClass("WorldServer"), Reflection.getUtilClass("com.mojang.authlib.GameProfile"), Reflection.getNmsClass("PlayerInteractManager"));
+        Object entityPlayer = Reflection.callConstructor(entityPlayerConstructor, server, worldServer, profile, interactManager);
         Player player = (Player) getBukkitEntity(entityPlayer);
         return player;
     }
 
     private static Object newGameProfile(UUID id, String name) {
-        Class<?> gameProfileClass = getUtilClass("com.mojang.authlib.GameProfile");
+        Class<?> gameProfileClass = Reflection.getUtilClass("com.mojang.authlib.GameProfile");
         if (gameProfileClass == null) { //Before uuids
             return name;
         }
         Constructor gameProfileConstructor = null;
-        gameProfileConstructor = makeConstructor(gameProfileClass, UUID.class, String.class);
+        gameProfileConstructor = Reflection.makeConstructor(gameProfileClass, UUID.class, String.class);
         if (gameProfileConstructor == null) { //Verson has string constructor
-            gameProfileConstructor = makeConstructor(gameProfileClass, String.class, String.class);
-            return callConstructor(gameProfileConstructor, id.toString(), name);
+            gameProfileConstructor = Reflection.makeConstructor(gameProfileClass, String.class, String.class);
+            return Reflection.callConstructor(gameProfileConstructor, id.toString(), name);
         } else { //Version has uuid constructor
-            return callConstructor(gameProfileConstructor, id, name);
+            return Reflection.callConstructor(gameProfileConstructor, id, name);
         }
     }
 
     private static Object newPlayerInteractManager() {
         Object worldServer = getWorldServer();
-        Class<?> playerInteractClass = getNmsClass("PlayerInteractManager");
-        Class<?> worldClass = getNmsClass("World");
-        Constructor c = makeConstructor(playerInteractClass, worldClass);
-        return callConstructor(c, worldServer);
+        Class<?> playerInteractClass = Reflection.getNmsClass("PlayerInteractManager");
+        Class<?> worldClass = Reflection.getNmsClass("World");
+        Constructor c = Reflection.makeConstructor(playerInteractClass, worldClass);
+        return Reflection.callConstructor(c, worldServer);
     }
 
     private static Object getWorldServer() {
         Object server = getMinecraftServer();
-        Class<?> minecraftServerClass = getNmsClass("MinecraftServer");
-        Method getWorldServer = makeMethod(minecraftServerClass, "getWorldServer", int.class);
-        return callMethod(getWorldServer, server, 0);
+        Class<?> minecraftServerClass = Reflection.getNmsClass("MinecraftServer");
+        Method getWorldServer = Reflection.makeMethod(minecraftServerClass, "getWorldServer", int.class);
+        return Reflection.callMethod(getWorldServer, server, 0);
     }
 
     //NMS Utils
 
     private static Object getMinecraftServer() {
-        return callMethod(makeMethod(getCbClass("CraftServer"), "getServer"), Bukkit.getServer());
+        return Reflection.callMethod(Reflection.makeMethod(Reflection.getCbClass("CraftServer"), "getServer"), Bukkit.getServer());
     }
 
     private static Entity getBukkitEntity(Object o) {
-        Method getBukkitEntity = makeMethod(o.getClass(), "getBukkitEntity");
-        return callMethod(getBukkitEntity, o);
+        Method getBukkitEntity = Reflection.makeMethod(o.getClass(), "getBukkitEntity");
+        return Reflection.callMethod(getBukkitEntity, o);
     }
 }

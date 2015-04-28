@@ -27,10 +27,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.trc202.CombatTag.Reflection;
 import org.bukkit.entity.Player;
 
-import static com.trc202.CombatTag.Reflection.*;
+import static com.trc202.libs.techcable.Reflection.*;
 
 /**
  * A 1.8 ActionBar
