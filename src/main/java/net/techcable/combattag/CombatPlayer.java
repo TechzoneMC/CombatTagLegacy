@@ -1,6 +1,7 @@
 package net.techcable.combattag;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.techcable.combattag.libs.ActionBar;
 import net.techcable.combattag.tasks.SafeLogoutTask;
 import net.techcable.techutils.entity.TechPlayer;
@@ -10,7 +11,7 @@ import javax.swing.*;
 import java.util.UUID;
 
 public class CombatPlayer extends TechPlayer {
-    private long whenTagExpires = 0;
+    private volatile long whenTagExpires = 0;
 
     public CombatTag getPlugin() {
         return (CombatTag) super.getPlugin();
@@ -57,4 +58,8 @@ public class CombatPlayer extends TechPlayer {
     public long getRemainingTagTime() {
         return System.currentTimeMillis() - whenTagExpires;
     }
+    
+    @Getter
+    @Setter
+    private volatile int safeLogoutTimeRemaining; 
 }

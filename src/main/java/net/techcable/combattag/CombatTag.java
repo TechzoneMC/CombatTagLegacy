@@ -29,6 +29,7 @@ public class CombatTag extends com.trc202.CombatTag.CombatTag {//Extend the old 
         getCommand("ct").setExecutor(new CombatTagExecutor(this));
         registerListener(new PlayerListener(this));
         registerListener(new ConfigListener());
+        MaximvdwHelper.registerPlaceholders();
         initMetrics();
         if (!getSettings().isInstaKill()) {
             if (!NPCLib.isSupported() ){

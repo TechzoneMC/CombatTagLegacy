@@ -3,10 +3,12 @@ version: 6.4.1-SNAPSHOT
 authors: 
   - cheddar262
   - Techcable
-main: com.trc202.CombatTag.CombatTag
+main: net.techcable.combattag.CombatTag
 dev-url: http://dev.bukkit.org/server-mods/combat-tag
 commands:
   CombatTag:
     description: Shows the current remaining time in a tag
     aliases: ct
     usage: /ct
+softdepend:
+  - FeatherBoard

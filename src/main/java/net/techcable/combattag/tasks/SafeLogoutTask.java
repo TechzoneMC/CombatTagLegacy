@@ -38,6 +38,7 @@ public class SafeLogoutTask extends BukkitRunnable  {
             cancel();
         } else {
             int timeRemaining = (int) (lastTick - startTime) / 1000;
+            player.setSafeLogoutTimeRemaining(timeRemaining);
             switch (displayMode) {
                 case ACTION_BAR:
                     displayActionBarCountdown("Time till SafeLogout:\n", timeRemaining, logoutTime, player);
