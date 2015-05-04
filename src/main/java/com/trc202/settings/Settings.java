@@ -57,7 +57,7 @@ public class Settings {
         playerTag = true;
         blockCreativeTagging = true;
         blockFly = false;
-        tagDisplayMode = "actionBar";
+        tagDisplayMode = "bossBar";
     }
 
     public void setDebugEnabled(boolean debugEnabled) {
@@ -245,6 +245,16 @@ public class Settings {
     public boolean blockFly() {
         return blockFly;
     }
+
+    @Getter
+    @Setter
+    private boolean safeLogoutEnabled = true;
+    @Getter
+    @Setter
+    private int safeLogoutTime = 15;
+    @Getter
+    @Setter
+    private String safeLogoutDisplayMode = "actionBar";
 
     public String translateColor(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);

@@ -1,17 +1,21 @@
 package com.trc202.CombatTagApi;
 
+import net.techcable.combattag.CombatPlayer;
+import net.techcable.combattag.CombatTag;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.trc202.CombatTag.CombatTag;
-
 public class CombatTagApi {
 
-    private final CombatTag plugin;
+    public CombatTagApi(com.trc202.CombatTag.CombatTag plugin) {}
 
-    public CombatTagApi(CombatTag plugin) {
-        this.plugin = plugin;
+    private static CombatTagApi instance;
+    public static CombatTagApi getInstance() {
+        if (instance == null) {
+            instance = new CombatTagApi(CombatTag.getInstance());
+        }
+        return instance;
     }
 
     /**
@@ -19,11 +23,12 @@ public class CombatTagApi {
      * configured by the server owner If the player has died while in combat the
      * player is no longer considered in combat and as such will return false
      *
-     * @param player
+     * @param playerEntity
      * @return true if player is in combat
      */
-    public boolean isInCombat(Player player) {
-        return plugin.isInCombat(player.getUniqueId());
+    public boolean isInCombat(Player playerEntity) {
+        CombatPlayer player = CombatPlayer.getPlayer(playerEntity);
+        return player.isTagged();
     }
 
     /**
@@ -38,7 +43,7 @@ public class CombatTagApi {
     public boolean isInCombat(String name) {
         Player player = Bukkit.getPlayerExact(name);
         if (player != null) {
-            return plugin.isInCombat(player.getUniqueId());
+            return isInCombat(player);
         }
         return false;
     }
@@ -51,8 +56,9 @@ public class CombatTagApi {
      * @return
      */
     public long getRemainingTagTime(Player player) {
-        if (plugin.isInCombat(player.getUniqueId())) {
-            return plugin.getRemainingTagTime(player.getUniqueId());
+        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        if (combatPlayer.isTagged()) {
+            return combatPlayer.getRemainingTagTime();
         } else {
             return -1L;
         }
@@ -69,8 +75,8 @@ public class CombatTagApi {
     public long getRemainingTagTime(String name) {
         if (Bukkit.getPlayerExact(name) != null) {
             Player player = Bukkit.getPlayerExact(name);
-            if (plugin.isInCombat(player.getUniqueId())) {
-                return plugin.getRemainingTagTime(player.getUniqueId());
+            if (isInCombat(player)) {
+                return getRemainingTagTime(player);
             } else {
                 return -1L;
             }
@@ -85,7 +91,7 @@ public class CombatTagApi {
      * @return true if the player is an NPC
      */
     public boolean isNPC(Entity entity) {
-        return plugin.npcm.isNPC(entity);
+        return CombatTag.getInstance().getNpcManager() == null ? false : CombatTag.getInstance().getNpcManager().isNPC(entity);
     }
 
     /**
@@ -95,7 +101,9 @@ public class CombatTagApi {
      * @return true if the action is successful, false if not
      */
     public boolean tagPlayer(Player player) {
-        return plugin.addTagged(player);
+        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        combatPlayer.tag();
+        return true;
     }
 
     /**
@@ -104,7 +112,8 @@ public class CombatTagApi {
      * @param player
      */
     public void untagPlayer(Player player) {
-        plugin.removeTagged(player.getUniqueId());
+        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        combatPlayer.untag();
     }
 
     /**
@@ -114,6 +123,6 @@ public class CombatTagApi {
      * @return String value of option
      */
     public String getConfigOption(String configKey) {
-        return plugin.getSettingsHelper().getProperty(configKey);
+        throw new UnsupportedOperationException("No access to internals permitted");
     }
 }

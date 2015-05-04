@@ -1,9 +1,13 @@
 package com.trc202.CombatTag;
 
 import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
+
+import com.trc202.CombatTagApi.CombatTagApi;
 import net.slipcor.pvparena.PVPArena;
 import net.slipcor.pvparena.api.PVPArenaAPI;
+import net.techcable.combattag.CombatTag;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -104,14 +108,14 @@ public class CombatTagIncompatibles {
             if (e.getVictim() instanceof Player) {
                 Player tagged = (Player) e.getVictim();
 
-                if (plugin.npcm.isNPC(tagged) || plugin.entityListener.disallowedWorld(tagged.getWorld().getName())) {
+                if (CombatTagApi.getInstance().isNPC(tagged) || ArrayUtils.contains(CombatTag.getInstance().getSettings().getDisallowedWorlds(), tagged.getWorld().getName())) {
                     return;
                 } //If the damaged player is an npc do nothing
 
-                if ((dmgr instanceof Player) && plugin.settings.playerTag()) {
+                if ((dmgr instanceof Player) && plugin.getSettings().playerTag()) {
                     Player damagerPlayer = (Player) dmgr;
                     if (damagerPlayer != tagged) {
-                        plugin.entityListener.onPlayerDamageByPlayer(damagerPlayer, tagged);
+                        System.err.println("Compatibility with crackshot has been temporarily disabled");
                     }
                 }
             }

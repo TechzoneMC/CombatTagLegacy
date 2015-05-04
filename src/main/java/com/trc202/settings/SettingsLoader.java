@@ -28,6 +28,9 @@ public class SettingsLoader {
     private static final String blockCreativeTagging = "blockCreativeTagging";
     private static final String blockFlying = "blockFlying";
     private static final String tagDisplayMode = "tagDisplayMode";
+    private static final String safeLogoutTime = "safeLogoutTime";
+    private static final String safeLogoutDisplayMode = "safeLogoutDisplayMode";
+    private static final String safeLogoutEnabled = "safeLogoutEnabled";
 
     public Settings loadSettings(SettingsHelper helper, String version) {
         settings = new Settings();
@@ -117,6 +120,15 @@ public class SettingsLoader {
         if (helper.getProperty(tagDisplayMode) == null) {
             helper.setProperty(tagDisplayMode, temp.getTagDisplayMode());
         }
+        if (helper.getProperty(safeLogoutTime) == null) {
+            helper.setProperty(safeLogoutTime, Integer.toString(temp.getSafeLogoutTime()));
+        }
+        if (helper.getProperty(safeLogoutDisplayMode) == null) {
+            helper.setProperty(safeLogoutDisplayMode, temp.getSafeLogoutDisplayMode());
+        }
+        if (helper.getProperty(safeLogoutEnabled) == null) {
+            helper.setProperty(safeLogoutEnabled, Boolean.toString(temp.isSafeLogoutEnabled()));
+        }
     }
 
     private boolean isLatestVersion(SettingsHelper helper, String vers) {
@@ -151,7 +163,10 @@ public class SettingsLoader {
                 && (helper.getProperty(playerTag) != null)
                 && (helper.getProperty(blockCreativeTagging) != null)
                 && (helper.getProperty(blockFlying) != null)
-                && (helper.getProperty(tagDisplayMode) != null);
+                && (helper.getProperty(tagDisplayMode) != null)
+                && (helper.getProperty(safeLogoutTime) != null)
+                && (helper.getProperty(safeLogoutDisplayMode) != null)
+                && (helper.getProperty(safeLogoutEnabled) != null);
     }
 
     private void loadProperties(SettingsHelper helper) {
@@ -188,5 +203,8 @@ public class SettingsLoader {
         settings.setBlockCreativeTagging(Boolean.valueOf(helper.getProperty(blockCreativeTagging)));
         settings.setBlockFly(Boolean.valueOf(helper.getProperty(blockFlying)));
         settings.setTagDisplayMode(helper.getProperty(tagDisplayMode));
+        settings.setSafeLogoutTime(Integer.valueOf(helper.getProperty(safeLogoutTime)));
+        settings.setSafeLogoutDisplayMode(helper.getProperty(safeLogoutDisplayMode));
+        settings.setSafeLogoutEnabled(Boolean.valueOf(safeLogoutEnabled));
     }
 }
