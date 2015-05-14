@@ -18,6 +18,7 @@
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
+        <repository>
             <id>maximvdw-repo</id>
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
         </repository>
