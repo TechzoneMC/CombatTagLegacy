@@ -85,7 +85,9 @@ public class CombatTag extends JavaPlugin {
                 }
             }
         }
-        actionBarTask.cancel();
+        if (actionBarTask != null) {
+            actionBarTask.cancel();
+        }
         //Just in case...
         log.info("[CombatTag] Disabled");
     }
