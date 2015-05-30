@@ -60,7 +60,7 @@ public class UpdateDisplayTask extends BukkitRunnable {
 
 
     private static void displayActionBarCountdown(String prefix, int timeRemaining, int maxTime, Player player) {
-        if (timeRemaining < 0) return;
+        if (timeRemaining <= 0) return;
         StringBuilder text = new StringBuilder();
         text.append(prefix);
         text.append(" ");
