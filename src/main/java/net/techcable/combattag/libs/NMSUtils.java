@@ -1,13 +1,14 @@
 package net.techcable.combattag.libs;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import net.techcable.techutils.Reflection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import lombok.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import net.techcable.techutils.Reflection;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import static net.techcable.techutils.Reflection.*;
 
@@ -30,7 +31,7 @@ public class NMSUtils {
      */
     public static void setHealth(LivingEntity bukkitEntity, double health) {
         Object entity = Reflection.getHandle(bukkitEntity);
-        Reflection.callMethod(ENTITY_LIVING_SET_HEALTH_METHOD, entity, (float)health);
+        Reflection.callMethod(ENTITY_LIVING_SET_HEALTH_METHOD, entity, (float) health);
     }
 
 }

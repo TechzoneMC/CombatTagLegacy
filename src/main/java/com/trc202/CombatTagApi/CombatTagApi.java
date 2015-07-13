@@ -2,15 +2,18 @@ package com.trc202.CombatTagApi;
 
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CombatTagApi {
 
-    public CombatTagApi(com.trc202.CombatTag.CombatTag plugin) {}
+    public CombatTagApi(com.trc202.CombatTag.CombatTag plugin) {
+    }
 
     private static CombatTagApi instance;
+
     public static CombatTagApi getInstance() {
         if (instance == null) {
             instance = new CombatTagApi(CombatTag.getInstance());
@@ -24,6 +27,7 @@ public class CombatTagApi {
      * player is no longer considered in combat and as such will return false
      *
      * @param playerEntity
+     *
      * @return true if player is in combat
      */
     public boolean isInCombat(Player playerEntity) {
@@ -37,6 +41,7 @@ public class CombatTagApi {
      * player is no longer considered in combat and as such will return false
      *
      * @param name
+     *
      * @return true if player is online and in combat
      */
     @SuppressWarnings("deprecation")
@@ -53,6 +58,7 @@ public class CombatTagApi {
      * the player is not in combat
      *
      * @param player
+     *
      * @return
      */
     public long getRemainingTagTime(Player player) {
@@ -69,6 +75,7 @@ public class CombatTagApi {
      * the player is not in combat
      *
      * @param name
+     *
      * @return
      */
     @SuppressWarnings("deprecation")
@@ -88,6 +95,7 @@ public class CombatTagApi {
      * Returns if the entity is an NPC
      *
      * @param entity
+     *
      * @return true if the player is an NPC
      */
     public boolean isNPC(Entity entity) {
@@ -98,6 +106,7 @@ public class CombatTagApi {
      * Tags player
      *
      * @param player
+     *
      * @return true if the action is successful, false if not
      */
     public boolean tagPlayer(Player player) {
@@ -120,6 +129,7 @@ public class CombatTagApi {
      * Returns the value of a configuration option with the specified name
      *
      * @param configKey
+     *
      * @return String value of option
      */
     public String getConfigOption(String configKey) {

@@ -1,5 +1,5 @@
 name: CombatTag
-version: 7.0.0-SNAPSHOT
+version: 7.0.0-beta-1-SNAPSHOT
 authors: 
   - cheddar262
   - Techcable
@@ -10,5 +10,9 @@ commands:
     description: Shows the current remaining time in a tag
     aliases: ct
     usage: /ct
+  Logout:
+    description: Safely logs you out without spawning an npc
+    usage: "/logout"
 softdepend:
   - FeatherBoard
+  - Citizens

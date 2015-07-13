@@ -1,0 +1,76 @@
+# Combat Tag Configuration File
+
+# whether to enable safe logout
+# When safe logout is enabled it is hareder for players to run away from combat and then logout
+# Players have to type '/logout' and wait 15 seconds before they can logout, giving people time to catch up to them
+safeLogoutEnabled: false
+# The amount of time players have to wait after typing '/logout' before they can logout
+safeLogoutTime: 15
+# Where the player's safe logout is disabled
+safeLogoutDisplayMode: "actionBar"
+# The amount of time players are in combat after being hit
+# This gets reset each time the player hits
+tagDuration: 10
+# Set to true to print out extra information
+debugMode: false
+# How to punish players who logout in combat
+# 'npc' Spawns a npc that players can attack to get the logged-out players stuff
+# 'instakill' kills the player that logs out
+punishment: "npc"
+
+# A list of commands to disable in combat
+# Must start with '/'
+# 'all' (without the '/') disables all commands in combat
+disallowedCommands:
+  - "/tpa"
+  - "/tp"
+  - "/spawn"
+  - "/home"
+  - "/warp"
+
+# A list of worlds where combat-tagging is disabled
+disallowedWorlds:
+  - "example1"
+  - "example2"
+
+# whether to un-tag the player when they are kickced
+# This way people kicked for (possibly false) hacking by NCP won't get punished
+dropTagOnKick: false
+
+# whether mobs can tag players
+mobTag: false
+# whether players can tag players
+playerTag: true
+# Where to display the combat tagging information
+# 'chat' shows it in chat
+# 'actionBar' shows it in an action bar
+# 'bossBar' shows it in a boss bar
+# 'none' doesn't show it
+tagDisplayMode: "bossBar"
+
+# Whether to only tag the attacker
+onlyTagDamager: false
+
+npc:
+  # The name of the npc to spawn
+  # '{player}' will be replaced with the name of the player who combat logged
+  # '{number}' is the npc's number
+  name: "{player}"
+  # The time (in ticks) until npcs despawn after combat logging
+  # -1 stays until restart
+  despawnTime: -1
+  # Set to true to kill the npc when the time runs out
+  # This will cause the player to drop their items
+  dieAfterTimeRunsOut: false
+blocks:
+  # Set to true to allow players to break and  place blocks in combat
+  canEditBlocks: true
+  # whether to block telporting in combat
+  # It is recommended to block teleporting via commands
+  teleport: false
+  # whether to block ender pearling in combat
+  enderPearl: false
+  # whether to block creative players from combat tagging others
+  creativeTagging: true
+  # whether to block players from flying in combat
+  fly: true

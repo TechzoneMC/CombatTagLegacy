@@ -1,8 +1,5 @@
 package com.trc202.CombatTag;
 
-import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
-
-import com.trc202.CombatTagApi.CombatTagApi;
 import net.slipcor.pvparena.PVPArena;
 import net.slipcor.pvparena.api.PVPArenaAPI;
 import net.techcable.combattag.CombatTag;
@@ -22,6 +19,9 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.tommytony.war.Warzone;
+import com.trc202.CombatTagApi.CombatTagApi;
+
+import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
 
 public class CombatTagIncompatibles {
 
@@ -108,11 +108,11 @@ public class CombatTagIncompatibles {
             if (e.getVictim() instanceof Player) {
                 Player tagged = (Player) e.getVictim();
 
-                if (CombatTagApi.getInstance().isNPC(tagged) || ArrayUtils.contains(CombatTag.getInstance().getSettings().getDisallowedWorlds(), tagged.getWorld().getName())) {
+                if (CombatTagApi.getInstance().isNPC(tagged) || CombatTag.getInstance().getSettings().getDisallowedWorlds().contains(tagged.getWorld().getName())) {
                     return;
                 } //If the damaged player is an npc do nothing
 
-                if ((dmgr instanceof Player) && plugin.getSettings().playerTag()) {
+                if ((dmgr instanceof Player) && plugin.getSettings().isPlayerTag()) {
                     Player damagerPlayer = (Player) dmgr;
                     if (damagerPlayer != tagged) {
                         System.err.println("Compatibility with crackshot has been temporarily disabled");

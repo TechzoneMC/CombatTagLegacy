@@ -1,23 +1,24 @@
 package net.techcable.combattag;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.techcable.combattag.libs.ActionBar;
-import net.techcable.combattag.tasks.SafeLogoutTask;
-import net.techcable.techutils.entity.TechPlayer;
-import org.bukkit.entity.Player;
+import lombok.*;
 
-import javax.swing.*;
 import java.util.UUID;
 
+import net.techcable.combattag.tasks.SafeLogoutTask;
+import net.techcable.techutils.entity.TechPlayer;
+import net.techcable.techutils.ui.ActionBar;
+
+import org.bukkit.entity.Player;
+
 public class CombatPlayer extends TechPlayer {
-    private volatile long whenTagExpires = 0;
+
+    private volatile long whenTagExpires = -1;
 
     public CombatTag getPlugin() {
         return (CombatTag) super.getPlugin();
     }
 
-    public CombatPlayer(UUID id,  CombatTag plugin) {
+    public CombatPlayer(UUID id, CombatTag plugin) {
         super(id, plugin);
     }
 
@@ -26,7 +27,9 @@ public class CombatPlayer extends TechPlayer {
     }
 
     public boolean isTagged() {
-        return System.currentTimeMillis() - whenTagExpires > (getPlugin().getSettings().getTagDuration() * 1000);
+        if (whenTagExpires <= 0) return false;
+        long timeRemaining = whenTagExpires - System.currentTimeMillis();
+        return timeRemaining > 0;
     }
 
     public void tag() {
@@ -43,6 +46,7 @@ public class CombatPlayer extends TechPlayer {
     }
 
     @Getter
+    @Setter
     private SafeLogoutTask logoutTask;
 
     public void cancelSafeLogout() {
@@ -52,14 +56,14 @@ public class CombatPlayer extends TechPlayer {
     }
 
     public void untag() {
-        whenTagExpires = System.currentTimeMillis();
+        whenTagExpires = -1;
     }
 
     public long getRemainingTagTime() {
-        return System.currentTimeMillis() - whenTagExpires;
+        return whenTagExpires - System.currentTimeMillis();
     }
-    
+
     @Getter
     @Setter
-    private volatile int safeLogoutTimeRemaining; 
+    private volatile int safeLogoutTimeRemaining;
 }

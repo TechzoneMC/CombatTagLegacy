@@ -1,9 +1,10 @@
 package net.techcable.combattag.listeners;
 
-import com.trc202.settings.Settings;
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
+import net.techcable.combattag.config.CombatTagConfig;
 import net.techcable.combattag.events.CombatTagEvent;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -29,18 +30,18 @@ public class ConfigListener implements Listener {
         if (event.isBecauseOfAttack()) {
             if (event.getCause() instanceof Player) {
                 Player attacker = (Player) event.getCause();
-                if (attacker.getGameMode().equals(GameMode.CREATIVE) && getSettings().blockCreativeTagging()) {
+                if (attacker.getGameMode().equals(GameMode.CREATIVE) && getSettings().isBlockCreativeTagging()) {
                     attacker.sendMessage("You can't combat tag players while in creative");
                     event.setCancelled(true);
                     return;
                 }
             }
         } else if (event.isBecauseOfDefend()) {
-            if (getSettings().onlyDamagerTagged()) {
+            if (getSettings().isOnlyTagDamager()) {
                 event.setCancelled(true);
             }
         }
-        if (event.getPlayer().getEntity().isFlying() && getSettings().blockFly()) {
+        if (event.getPlayer().getEntity().isFlying() && getSettings().isBlockFly()) {
             event.getPlayer().getEntity().sendMessage("You can't fly while in combat!");
             event.getPlayer().getEntity().setFlying(false);
         }
@@ -63,12 +64,12 @@ public class ConfigListener implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
-        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && getSettings().blockEnderPearl() && player.isTagged()) {
+        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && getSettings().isBlockEnderPearl() && player.isTagged()) {
             player.getEntity().sendMessage("You can't enderpearl in combat");
             event.setCancelled(true);
             return;
         }
-        if (getSettings().blockTeleport() && player.isTagged()) {
+        if (getSettings().isBlockTeleport() && player.isTagged()) {
             player.getEntity().sendMessage("You can't teleport in combat");
             event.setCancelled(true);
             return;
@@ -94,7 +95,7 @@ public class ConfigListener implements Listener {
     }
 
 
-    public Settings getSettings() {
+    public CombatTagConfig getSettings() {
         return CombatTag.getInstance().getSettings();
     }
 
@@ -106,7 +107,7 @@ public class ConfigListener implements Listener {
         CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
         if (player.isTagged()) {
             String command = event.getMessage();
-            for (String disabledCommand : CombatTag.getInstance().getSettings().getDisabledCommands()) {
+            for (String disabledCommand : CombatTag.getInstance().getSettings().getDisallowedCommands()) {
                 if (disabledCommand.equalsIgnoreCase("all") && !command.equalsIgnoreCase("/ct") && !command.equalsIgnoreCase("/combattag")) {
                     player.getEntity().sendMessage(ChatColor.RED + "[CombatTag] All commands are disabled while in combat");
                     event.setCancelled(true);
@@ -114,7 +115,7 @@ public class ConfigListener implements Listener {
                 }
                 if (command.indexOf(" ") == disabledCommand.length()) {
                     if (command.substring(0, command.indexOf(" ")).equalsIgnoreCase(disabledCommand)) {
-                        if (player.getPlugin().getSettings().isDebugEnabled()) {
+                        if (player.getPlugin().getSettings().isDebugMode()) {
                             CombatTag.getInstance().getLogger().info("[CombatTag] Combat Tag has blocked the command: " + disabledCommand + " .");
                         }
                         player.getEntity().sendMessage(ChatColor.RED + "[CombatTag] This command is disabled while in combat");
@@ -123,7 +124,7 @@ public class ConfigListener implements Listener {
                     }
                 } else if (disabledCommand.indexOf(" ") > 0) {
                     if (command.toLowerCase().startsWith(disabledCommand.toLowerCase())) {
-                        if (player.getPlugin().getSettings().isDebugEnabled()) {
+                        if (player.getPlugin().getSettings().isDebugMode()) {
                             CombatTag.getInstance().getLogger().info("[CombatTag] Combat Tag has blocked the command: " + disabledCommand + " .");
                         }
                         player.getEntity().sendMessage(ChatColor.RED + "[CombatTag] This command is disabled while in combat");
@@ -131,7 +132,7 @@ public class ConfigListener implements Listener {
                         return;
                     }
                 } else if (!command.contains(" ") && command.equalsIgnoreCase(disabledCommand)) {
-                    if (player.getPlugin().getSettings().isDebugEnabled()) {
+                    if (player.getPlugin().getSettings().isDebugMode()) {
                         CombatTag.getInstance().getLogger().info("[CombatTag] Combat Tag has blocked the command: " + disabledCommand + " .");
                     }
                     player.getEntity().sendMessage(ChatColor.RED + "[CombatTag] This command is disabled while in combat");
