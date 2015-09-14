@@ -31,10 +31,11 @@ public class SafeLogoutTask extends BukkitRunnable {
 
     private long lastTick = startTime;
 
+    public static final String KICK_MSG = ChatColor.GREEN + "You have safely logged out";
     @Override
     public void run() {
         if (isDone()) {
-            player.getEntity().kickPlayer(ChatColor.GREEN + "You have safely logged out");
+            player.getEntity().kickPlayer(KICK_MSG);
             cancel();
         } else {
             int timeRemaining = (int) (lastTick - startTime) / 1000;

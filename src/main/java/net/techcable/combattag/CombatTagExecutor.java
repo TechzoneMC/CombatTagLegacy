@@ -112,7 +112,7 @@ public class CombatTagExecutor implements CommandExecutor {
 
     public void onWipe() {
         for (CombatNPC npc : plugin.getNpcManager().listNpcs()) {
-            plugin.getNpcManager().despawnNpc(npc);
+            npc.despawn();
         }
     }
 }

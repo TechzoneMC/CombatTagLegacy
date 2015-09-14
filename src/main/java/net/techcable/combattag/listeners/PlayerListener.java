@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -77,6 +78,11 @@ public class PlayerListener implements Listener {
         onLogout(player);
     }
 
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        CombatPlayer player = plugin.getPlayer(event.getEntity());
+        player.untag();
+    }
 
     private void onLogout(CombatPlayer player) {
         if (!player.isTagged()) return;

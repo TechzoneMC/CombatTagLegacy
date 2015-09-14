@@ -3,13 +3,15 @@ package com.trc202.CombatTagApi;
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
 
+import net.techcable.combattag.npc.NPCManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CombatTagApi {
-
+    private final CombatTag plugin;
     public CombatTagApi(com.trc202.CombatTag.CombatTag plugin) {
+        this.plugin = (CombatTag) plugin;
     }
 
     private static CombatTagApi instance;
@@ -62,7 +64,7 @@ public class CombatTagApi {
      * @return
      */
     public long getRemainingTagTime(Player player) {
-        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        CombatPlayer combatPlayer = plugin.getPlayer(player);
         if (combatPlayer.isTagged()) {
             return combatPlayer.getRemainingTagTime();
         } else {
@@ -99,7 +101,8 @@ public class CombatTagApi {
      * @return true if the player is an NPC
      */
     public boolean isNPC(Entity entity) {
-        return CombatTag.getInstance().getNpcManager() == null ? false : CombatTag.getInstance().getNpcManager().isNPC(entity);
+        NPCManager npcManager = plugin.getNpcManager();
+        return npcManager != null && entity instanceof Player && npcManager.isNPC(((Player) entity));
     }
 
     /**
@@ -110,7 +113,7 @@ public class CombatTagApi {
      * @return true if the action is successful, false if not
      */
     public boolean tagPlayer(Player player) {
-        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        CombatPlayer combatPlayer = plugin.getPlayer(player);
         combatPlayer.tag();
         return true;
     }
@@ -121,7 +124,7 @@ public class CombatTagApi {
      * @param player
      */
     public void untagPlayer(Player player) {
-        CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
+        CombatPlayer combatPlayer = plugin.getPlayer(player);
         combatPlayer.untag();
     }
 

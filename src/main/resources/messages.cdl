@@ -1,0 +1,19 @@
+// Combat Tag Messagese File
+// Everything can be colored by prefixing with '&'
+
+// The message sent to the attacker when he gets combat tagged
+// '{player}' is replaced with the defender
+attackerTagMessage = "You have hit {player}. Type /ct to check your remaining tag time."
+
+// The message sent to the defender when he gets combat tagged
+// '{player}' is replaced with the attacker
+defenderTagMessage = "You have been hit by {player}. Type /ct to check your remaining tag time."
+
+command {
+  // The message sent to the player when he executes '/ct' and is in combat
+  // '{time}' is replaced with the time left in combat
+  whenTagged = "You are in combat for {time} seconds."
+
+  // The message sent to the player when he executes '/ct' and is not in combat
+  whenNotTagged = "You are not currently in combat."
+}

@@ -11,12 +11,6 @@ import net.techcable.techutils.config.Setting;
 
 @Getter
 public class CombatTagConfig extends AnnotationConfig {
-
-    static {
-        addSerializer(new DisplayMode.Serializer());
-        addSerializer(new Punishment.Serializer());
-    }
-
     @Setting("safeLogoutEnabled")
     private boolean safeLogoutEnabled = false;
 
@@ -73,6 +67,9 @@ public class CombatTagConfig extends AnnotationConfig {
 
     @Setting("npc.dieAfterTimeRunsOut")
     private boolean npcDiesAfterTimeRunsOut = false;
+
+    @Setting("npc.showInTab")
+    private boolean showNpcInTab = false;
 
     //
     // Blocks

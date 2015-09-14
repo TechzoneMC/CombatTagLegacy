@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+import net.techcable.combattag.npc.CombatNPC;
+import net.techcable.combattag.npc.NPCManager;
+import net.techcable.combattag.npc.NPCType;
 import net.techcable.combattag.tasks.SafeLogoutTask;
 import net.techcable.techutils.entity.TechPlayer;
 import net.techcable.techutils.ui.ActionBar;
@@ -23,7 +26,8 @@ public class CombatPlayer extends TechPlayer {
     }
 
     public static CombatPlayer getPlayer(Player player) {
-        return CombatTag.getPlugin(CombatTag.class).getPlayer(player);
+        CombatTag plugin = CombatTag.getPlugin(CombatTag.class);
+        return plugin.getPlayer(player);
     }
 
     public boolean isTagged() {
@@ -43,6 +47,11 @@ public class CombatPlayer extends TechPlayer {
     public void sendActionBar(String s) {
         ActionBar bar = new ActionBar(s);
         bar.sendTo(getEntity());
+    }
+
+    public CombatNPC getNpc(NPCType type) {
+        UUID npcId = type.mask(getId());
+        return getPlugin().getNpcManager().getNpc(npcId);
     }
 
     @Getter
