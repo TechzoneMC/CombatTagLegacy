@@ -1,15 +1,13 @@
 package net.techcable.combattag.npc;
 
-import lombok.*;
-
 import java.util.UUID;
 
-import net.techcable.combattag.CombatTag;
 import net.techcable.npclib.HumanNPC;
-
 import net.techcable.npclib.utils.uuid.UUIDUtils;
 import net.techcable.techutils.inventory.InventoryUtils;
 import net.techcable.techutils.inventory.PlayerData;
+
+import lombok.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

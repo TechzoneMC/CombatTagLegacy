@@ -1,6 +1,5 @@
 package net.techcable.combattag.listeners;
 
-import lombok.RequiredArgsConstructor;
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
 import net.techcable.combattag.config.DisplayMode;
@@ -13,6 +12,7 @@ import net.techcable.techutils.inventory.InventoryUtils;
 import net.techcable.techutils.inventory.PlayerData;
 import net.techcable.techutils.ui.BossBar;
 
+import lombok.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,7 +35,7 @@ public class SafeLogoutListener implements Listener {
     public void onMove(PlayerMoveEvent event) {
         final CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
         boolean isMoveOutOfBlock = event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ();
-        if (!isMoveOutOfBlock) return;
+        if (! isMoveOutOfBlock) return;
         tryCancelWithMsg(player, "You moved while trying to logout");
     }
 
@@ -74,7 +74,7 @@ public class SafeLogoutListener implements Listener {
     }
 
     private void tryCancelWithMsg(final CombatPlayer player, String msg) {
-        SafeLogoutTask task =  player.getLogoutTask();
+        SafeLogoutTask task = player.getLogoutTask();
         if (task == null) return;
         switch (getDisplayMode()) {
             case BOSS_BAR:

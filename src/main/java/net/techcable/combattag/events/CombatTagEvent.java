@@ -1,9 +1,8 @@
 package net.techcable.combattag.events;
 
-import lombok.*;
-
 import net.techcable.combattag.CombatPlayer;
 
+import lombok.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

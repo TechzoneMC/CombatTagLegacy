@@ -1,9 +1,8 @@
 package net.techcable.combattag;
 
-import lombok.*;
-
 import java.util.logging.Level;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;

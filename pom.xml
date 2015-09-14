@@ -8,7 +8,7 @@
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <repositories>
         <repository>
             <id>techcable-repo</id> <!-- Houses war, crackshot, and NPCLib -->
@@ -23,7 +23,7 @@
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -48,7 +48,7 @@
             <version>1.8.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Compatibility -->
         <dependency>
             <groupId>be.maximvdw</groupId>
@@ -93,7 +93,7 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-    
+
     <build>
         <finalName>CombatTag</finalName>
         <plugins>
@@ -116,7 +116,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom> 
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
                                     <pattern>net.techcable.techutils</pattern>

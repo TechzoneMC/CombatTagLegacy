@@ -1,22 +1,17 @@
 package net.techcable.combattag;
 
-import lombok.*;
-
-import java.util.Set;
-
 import net.techcable.combattag.npc.CombatNPC;
 import net.techcable.npclib.utils.uuid.UUIDUtils;
 
+import lombok.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Sets;
-
 /**
  * Executes the /ct command
- * <p/>
+ * <p>
  * Supported sub commands:
  * /ct force [player]
  * /ct wipe
@@ -28,9 +23,9 @@ public class CombatTagExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (!label.equalsIgnoreCase("ct") && !label.equalsIgnoreCase("combattag")) return false;
+        if (! label.equalsIgnoreCase("ct") && ! label.equalsIgnoreCase("combattag")) return false;
         if (args.length == 0) { //Ct
-            if (!(commandSender instanceof Player)) {
+            if (! (commandSender instanceof Player)) {
                 commandSender.sendMessage("You must be a player to execute this command");
                 return true;
             }
@@ -39,7 +34,7 @@ public class CombatTagExecutor implements CommandExecutor {
         }
         String subCommand = args[0];
         if (subCommand.equalsIgnoreCase("wipe")) {
-            if (!commandSender.hasPermission("combattag.wipe")) {
+            if (! commandSender.hasPermission("combattag.wipe")) {
                 commandSender.sendMessage("You don't have permission to despawn all npcs");
                 return true;
             }
@@ -51,7 +46,7 @@ public class CombatTagExecutor implements CommandExecutor {
                 return true;
             }
             String subSubCommand = args[1];
-            if (!args[2].startsWith("/")) {
+            if (! args[2].startsWith("/")) {
                 commandSender.sendMessage("Please specifiy a vaild command");
                 commandSender.sendMessage("Did you prefix it with a '/' ?");
                 return true;
@@ -75,7 +70,7 @@ public class CombatTagExecutor implements CommandExecutor {
                 }
                 player = CombatPlayer.getPlayer(rawPlayer);
             } else if (commandSender instanceof Player) {
-                player = CombatPlayer.getPlayer((Player)commandSender);
+                player = CombatPlayer.getPlayer((Player) commandSender);
             } else {
                 commandSender.sendMessage("Please Specify a player");
                 return true;
@@ -104,7 +99,7 @@ public class CombatTagExecutor implements CommandExecutor {
     public void onTagCheck(Player player) {
         CombatPlayer combatPlayer = CombatPlayer.getPlayer(player);
         if (combatPlayer.isTagged()) {
-            player.sendMessage(plugin.getMessages().getCommandMessageTagged((int)combatPlayer.getRemainingTagTime() / 1000));
+            player.sendMessage(plugin.getMessages().getCommandMessageTagged((int) combatPlayer.getRemainingTagTime() / 1000));
         } else {
             player.sendMessage(plugin.getMessages().getCommandMessageWhenNotTagged());
         }

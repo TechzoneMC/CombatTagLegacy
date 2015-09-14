@@ -2,7 +2,6 @@ package net.techcable.combattag.listeners;
 
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
-import net.techcable.combattag.Utils;
 import net.techcable.combattag.config.DisplayMode;
 import net.techcable.combattag.events.CombatTagEvent;
 import net.techcable.techutils.ui.BossBar;
@@ -29,7 +28,7 @@ public class UIListener implements Listener {
 
                     @Override
                     public void run() {
-                        if (event.getPlayer().getEntity() == null || !event.getPlayer().getEntity().isOnline()) return;
+                        if (event.getPlayer().getEntity() == null || ! event.getPlayer().getEntity().isOnline()) return;
                         if (event.getPlayer().isTagged()) {
                             displayActionBarCountdown("Combat Time: ", (int) (event.getPlayer().getRemainingTagTime() / 1000), maxTime, event.getPlayer());
                         } else {
@@ -44,7 +43,7 @@ public class UIListener implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (event.getPlayer().getEntity() == null || !event.getPlayer().getEntity().isOnline()) return;
+                        if (event.getPlayer().getEntity() == null || ! event.getPlayer().getEntity().isOnline()) return;
                         if (event.getPlayer().isTagged()) {
                             displayBossBarContdown(ChatColor.RED + "Combat Time: ", (int) (event.getPlayer().getRemainingTagTime() / 1000), CombatTag.getInstance().getSettings().getTagDuration(), event.getPlayer());
                         } else {
@@ -55,7 +54,8 @@ public class UIListener implements Listener {
 
                                 @Override
                                 public void run() {
-                                    if (event.getPlayer().getEntity() == null || !event.getPlayer().getEntity().isOnline()) return;
+                                    if (event.getPlayer().getEntity() == null || ! event.getPlayer().getEntity().isOnline())
+                                        return;
                                     if (event.getPlayer().isTagged()) return; //They have been tagged again
                                     BossBar bar = BossBar.getBossBar(event.getPlayer().getEntity());
                                     bar.stopShowing();

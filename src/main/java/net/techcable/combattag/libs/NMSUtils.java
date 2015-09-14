@@ -1,12 +1,11 @@
 package net.techcable.combattag.libs;
 
-import lombok.*;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import net.techcable.techutils.Reflection;
 
+import lombok.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 

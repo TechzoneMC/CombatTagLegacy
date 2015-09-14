@@ -1,21 +1,19 @@
 package net.techcable.combattag;
 
-import lombok.*;
-
 import java.util.UUID;
 
 import net.techcable.combattag.npc.CombatNPC;
-import net.techcable.combattag.npc.NPCManager;
 import net.techcable.combattag.npc.NPCType;
 import net.techcable.combattag.tasks.SafeLogoutTask;
 import net.techcable.techutils.entity.TechPlayer;
 import net.techcable.techutils.ui.ActionBar;
 
+import lombok.*;
 import org.bukkit.entity.Player;
 
 public class CombatPlayer extends TechPlayer {
 
-    private volatile long whenTagExpires = -1;
+    private volatile long whenTagExpires = - 1;
 
     public CombatTag getPlugin() {
         return (CombatTag) super.getPlugin();
@@ -65,7 +63,7 @@ public class CombatPlayer extends TechPlayer {
     }
 
     public void untag() {
-        whenTagExpires = -1;
+        whenTagExpires = - 1;
     }
 
     public long getRemainingTagTime() {

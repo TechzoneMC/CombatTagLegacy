@@ -1,13 +1,13 @@
 package net.techcable.combattag.config;
 
-import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.techutils.config.AnnotationConfig;
 import net.techcable.techutils.config.Setting;
+
+import lombok.*;
 
 @Getter
 public class CombatTagConfig extends AnnotationConfig {
@@ -63,7 +63,7 @@ public class CombatTagConfig extends AnnotationConfig {
     }
 
     @Setting("npc.despawnTime")
-    private int npcDespawnTime = -1;
+    private int npcDespawnTime = - 1;
 
     @Setting("npc.dieAfterTimeRunsOut")
     private boolean npcDiesAfterTimeRunsOut = false;

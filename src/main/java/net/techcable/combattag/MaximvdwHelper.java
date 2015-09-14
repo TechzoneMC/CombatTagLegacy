@@ -2,11 +2,10 @@ package net.techcable.combattag;
 
 //Featherboard
 
-import lombok.*;
-
 import be.maximvdw.featherboard.api.PlaceholderAPI;
 import be.maximvdw.featherboard.api.PlaceholderAPI.PlaceholderRequestEvent;
 import be.maximvdw.featherboard.api.PlaceholderAPI.PlaceholderRequestEventHandler;
+import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MaximvdwHelper {
@@ -31,6 +30,7 @@ public class MaximvdwHelper {
                 }
             });
             Utils.info("Enabling featherboard support");
-        } catch (NoClassDefFoundError ex) {}
+        } catch (NoClassDefFoundError ex) {
+        }
     }
 }

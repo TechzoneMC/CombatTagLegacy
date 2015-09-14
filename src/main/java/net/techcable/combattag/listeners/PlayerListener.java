@@ -1,15 +1,14 @@
 package net.techcable.combattag.listeners;
 
-import lombok.*;
+import com.trc202.CombatTagApi.CombatTagApi;
 
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
-import net.techcable.combattag.config.Punishment;
 import net.techcable.combattag.events.CombatLogEvent;
 import net.techcable.combattag.events.CombatTagEvent;
 
+import lombok.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
@@ -23,8 +22,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.trc202.CombatTagApi.CombatTagApi;
-
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
 
@@ -33,11 +30,11 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
         LivingEntity attacker = getRootDamager(event.getDamager());
-        if (attacker == null || !(event.getEntity() instanceof LivingEntity)) return;
+        if (attacker == null || ! (event.getEntity() instanceof LivingEntity)) return;
         LivingEntity defender = (LivingEntity) event.getEntity();
         if (CombatTagApi.getInstance().isNPC(defender)) return;
         if (attacker.equals(defender)) return;
-        if (attacker instanceof Player && !CombatTag.getInstance().isNPC(defender)) {
+        if (attacker instanceof Player && ! CombatTag.getInstance().isNPC(defender)) {
             CombatPlayer attackPlayer = CombatPlayer.getPlayer((Player) attacker);
             if (attackPlayer.isTagged()) {
                 //Update time and return to avoid event spam
@@ -45,12 +42,12 @@ public class PlayerListener implements Listener {
             } else if (plugin.getSettings().isMobTag() || (defender instanceof HumanEntity)) {
                 CombatTagEvent tagEvent = new CombatTagEvent(attackPlayer, defender, CombatTagEvent.TagCause.ATTACK);
                 Bukkit.getPluginManager().callEvent(tagEvent);
-                if (!tagEvent.isCancelled()) {
+                if (! tagEvent.isCancelled()) {
                     attackPlayer.tag();
                 }
             }
         }
-        if (defender instanceof Player && !CombatTag.getInstance().isNPC(defender)) {
+        if (defender instanceof Player && ! CombatTag.getInstance().isNPC(defender)) {
             CombatPlayer defendPlayer = CombatPlayer.getPlayer((Player) defender);
             if (defendPlayer.isTagged()) {
                 //Update time and return to avoid event spam
@@ -58,7 +55,7 @@ public class PlayerListener implements Listener {
             } else if (plugin.getSettings().isMobTag() || (attacker instanceof HumanEntity)) {
                 CombatTagEvent tagEvent = new CombatTagEvent(defendPlayer, attacker, CombatTagEvent.TagCause.DEFEND);
                 Bukkit.getPluginManager().callEvent(tagEvent);
-                if (!tagEvent.isCancelled()) {
+                if (! tagEvent.isCancelled()) {
                     defendPlayer.tag();
                 }
             }
@@ -73,7 +70,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onKickMonitor(PlayerKickEvent event) {
-        if (CombatTag.getInstance().getSettings().isDropTagOnKick() && !event.getReason().contains("Hacking")) return;
+        if (CombatTag.getInstance().getSettings().isDropTagOnKick() && ! event.getReason().contains("Hacking")) return;
         CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
         onLogout(player);
     }
@@ -85,14 +82,14 @@ public class PlayerListener implements Listener {
     }
 
     private void onLogout(CombatPlayer player) {
-        if (!player.isTagged()) return;
+        if (! player.isTagged()) return;
         CombatLogEvent event = new CombatLogEvent(player);
         Bukkit.getPluginManager().callEvent(event);
     }
 
     public static LivingEntity getRootDamager(Entity e) {
         if (e instanceof Projectile) {
-            if (!(((Projectile) e).getShooter() instanceof LivingEntity)) return null;
+            if (! (((Projectile) e).getShooter() instanceof LivingEntity)) return null;
             return getRootDamager((Entity) ((Projectile) e).getShooter());
         } else if (e instanceof LivingEntity) {
             return (LivingEntity) e;

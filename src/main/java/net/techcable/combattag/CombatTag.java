@@ -1,7 +1,5 @@
 package net.techcable.combattag;
 
-import lombok.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -19,6 +17,7 @@ import net.techcable.combattag.npc.NPCManager;
 import net.techcable.npclib.NPCLib;
 import net.techcable.techutils.Reflection;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.LivingEntity;
@@ -54,7 +53,7 @@ public class CombatTag extends com.trc202.CombatTag.CombatTag {//Extend the old 
             MaximvdwHelper.registerPlaceholders();
         }
         initMetrics();
-        if (!NPCLib.isSupported()) {
+        if (! NPCLib.isSupported()) {
             severe("This version of minecraft isn't supported");
             severe("Please install citizens or update CombatTag if you want to use npcs");
         } else {

@@ -148,7 +148,6 @@ public class Metrics {
      * website. Plotters can be added to the graph object returned.
      *
      * @param name The name of the graph
-     *
      * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
      */
     public Graph createGraph(final String name) {
@@ -221,7 +220,7 @@ public class Metrics {
                         // We use the inverse of firstPost because if it is the first time we are posting,
                         // it is not a interval ping, so it evaluates to FALSE
                         // Each time thereafter it will evaluate to TRUE, i.e PING!
-                        postPlugin(!firstPost);
+                        postPlugin(! firstPost);
 
                         // After the first post we set firstPost to false
                         // Each post thereafter will be a ping
@@ -265,8 +264,6 @@ public class Metrics {
 
     /**
      * Enables metrics for the server by setting "opt-out" to false in the config file and starting the metrics task.
-     *
-     * @throws java.io.IOException
      */
     public void enable() throws IOException {
         // This has to be synchronized or it can collide with the check in the task.
@@ -286,14 +283,12 @@ public class Metrics {
 
     /**
      * Disables metrics for the server by setting "opt-out" to true in the config file and canceling the metrics task.
-     *
-     * @throws java.io.IOException
      */
     public void disable() throws IOException {
         // This has to be synchronized or it can collide with the check in the task.
         synchronized (optOutLock) {
             // Check if the server owner has already set opt-out, if not, set it.
-            if (!isOptOut()) {
+            if (! isOptOut()) {
                 configuration.set("opt-out", true);
                 configuration.save(configurationFile);
             }
@@ -396,7 +391,7 @@ public class Metrics {
 
                     graphJson.append('}');
 
-                    if (!firstGraph) {
+                    if (! firstGraph) {
                         json.append(',');
                     }
 
@@ -487,10 +482,6 @@ public class Metrics {
 
     /**
      * GZip compress a string of bytes
-     *
-     * @param input
-     *
-     * @return
      */
     public static byte[] gzip(String input) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -527,18 +518,12 @@ public class Metrics {
 
     /**
      * Appends a json encoded key/value pair to the given string builder.
-     *
-     * @param json
-     * @param key
-     * @param value
-     *
-     * @throws UnsupportedEncodingException
      */
     private static void appendJSONPair(StringBuilder json, String key, String value) throws UnsupportedEncodingException {
         boolean isValueNumeric = false;
 
         try {
-            if (value.equals("0") || !value.endsWith("0")) {
+            if (value.equals("0") || ! value.endsWith("0")) {
                 Double.parseDouble(value);
                 isValueNumeric = true;
             }
@@ -562,10 +547,6 @@ public class Metrics {
 
     /**
      * Escape a string to create a valid JSON string
-     *
-     * @param text
-     *
-     * @return
      */
     private static String escapeJSON(String text) {
         StringBuilder builder = new StringBuilder();
@@ -611,7 +592,6 @@ public class Metrics {
      * Encode text as UTF-8
      *
      * @param text the text to encode
-     *
      * @return the encoded text, as UTF-8
      */
     private static String urlEncode(final String text) throws UnsupportedEncodingException {
@@ -681,7 +661,7 @@ public class Metrics {
 
         @Override
         public boolean equals(final Object object) {
-            if (!(object instanceof Graph)) {
+            if (! (object instanceof Graph)) {
                 return false;
             }
 
@@ -753,7 +733,7 @@ public class Metrics {
 
         @Override
         public boolean equals(final Object object) {
-            if (!(object instanceof Plotter)) {
+            if (! (object instanceof Plotter)) {
                 return false;
             }
 

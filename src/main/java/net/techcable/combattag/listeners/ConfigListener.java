@@ -79,7 +79,7 @@ public class ConfigListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
-        if (!getSettings().isBlockEditWhileTagged()) {
+        if (! getSettings().isBlockEditWhileTagged()) {
             event.getPlayer().sendMessage("You can't place blocks in combat");
             event.setCancelled(true);
         }
@@ -88,7 +88,7 @@ public class ConfigListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         CombatPlayer player = CombatPlayer.getPlayer(event.getPlayer());
-        if (!getSettings().isBlockEditWhileTagged()) {
+        if (! getSettings().isBlockEditWhileTagged()) {
             event.getPlayer().sendMessage("You can't break blocks in combat");
             event.setCancelled(true);
         }
@@ -108,7 +108,7 @@ public class ConfigListener implements Listener {
         if (player.isTagged()) {
             String command = event.getMessage();
             for (String disabledCommand : CombatTag.getInstance().getSettings().getDisallowedCommands()) {
-                if (disabledCommand.equalsIgnoreCase("all") && !command.equalsIgnoreCase("/ct") && !command.equalsIgnoreCase("/combattag")) {
+                if (disabledCommand.equalsIgnoreCase("all") && ! command.equalsIgnoreCase("/ct") && ! command.equalsIgnoreCase("/combattag")) {
                     player.getEntity().sendMessage(ChatColor.RED + "[CombatTag] All commands are disabled while in combat");
                     event.setCancelled(true);
                     return;
@@ -131,7 +131,7 @@ public class ConfigListener implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-                } else if (!command.contains(" ") && command.equalsIgnoreCase(disabledCommand)) {
+                } else if (! command.contains(" ") && command.equalsIgnoreCase(disabledCommand)) {
                     if (player.getPlugin().getSettings().isDebugMode()) {
                         CombatTag.getInstance().getLogger().info("[CombatTag] Combat Tag has blocked the command: " + disabledCommand + " .");
                     }

@@ -1,9 +1,10 @@
 package net.techcable.combattag.npc;
 
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import net.techcable.npclib.HumanNPC;
 
-import java.util.UUID;
+import lombok.*;
 
 @RequiredArgsConstructor
 public enum NPCType {

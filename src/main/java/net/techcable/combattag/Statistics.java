@@ -2,10 +2,10 @@ package net.techcable.combattag;
 
 import java.io.IOException;
 
+import com.google.common.base.Supplier;
+
 import net.techcable.combattag.Metrics.Graph;
 import net.techcable.combattag.Metrics.Plotter;
-
-import com.google.common.base.Supplier;
 
 public class Statistics {
 
@@ -20,7 +20,6 @@ public class Statistics {
      * Activate metrics
      *
      * @param instaKill this supplier indicates the punishment used
-     *
      * @return true if successful
      */
     public boolean activate(final Supplier<Boolean> instaKill) {
@@ -44,7 +43,7 @@ public class Statistics {
 
                 @Override
                 public int getValue() {
-                    if (!instaKill.get()) {
+                    if (! instaKill.get()) {
                         return 1;
                     } else {
                         return 0;

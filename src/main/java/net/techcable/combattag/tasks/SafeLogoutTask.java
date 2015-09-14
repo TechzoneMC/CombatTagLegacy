@@ -1,15 +1,13 @@
 package net.techcable.combattag.tasks;
 
-import lombok.*;
-
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
 import net.techcable.combattag.config.DisplayMode;
 import net.techcable.techutils.ui.ActionBar;
 import net.techcable.techutils.ui.BossBar;
 
+import lombok.*;
 import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SafeLogoutTask extends BukkitRunnable {
@@ -32,6 +30,7 @@ public class SafeLogoutTask extends BukkitRunnable {
     private long lastTick = startTime;
 
     public static final String KICK_MSG = ChatColor.GREEN + "You have safely logged out";
+
     @Override
     public void run() {
         if (isDone()) {

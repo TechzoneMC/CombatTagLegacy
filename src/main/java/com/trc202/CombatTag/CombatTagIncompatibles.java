@@ -1,16 +1,5 @@
 package com.trc202.CombatTag;
 
-import net.slipcor.pvparena.PVPArena;
-import net.slipcor.pvparena.api.PVPArenaAPI;
-import net.techcable.combattag.CombatTag;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-
 import com.shampaggon.crackshot.CSDirector;
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldedit.Vector;
@@ -21,7 +10,17 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.tommytony.war.Warzone;
 import com.trc202.CombatTagApi.CombatTagApi;
 
-import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
+import net.slipcor.pvparena.PVPArena;
+import net.slipcor.pvparena.api.PVPArenaAPI;
+import net.techcable.combattag.CombatTag;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+
+import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
 public class CombatTagIncompatibles {
 

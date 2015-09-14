@@ -1,8 +1,8 @@
 package net.techcable.combattag.npc;
 
-import net.techcable.npclib.HumanNPC;
-
 import java.util.UUID;
+
+import net.techcable.npclib.HumanNPC;
 
 public class SafeLogoutNPC extends CombatNPC {
     public SafeLogoutNPC(NPCManager manager, UUID playerId, HumanNPC npc) {

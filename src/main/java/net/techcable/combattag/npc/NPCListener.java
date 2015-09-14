@@ -1,24 +1,19 @@
 package net.techcable.combattag.npc;
 
-import lombok.RequiredArgsConstructor;
 import net.techcable.combattag.CombatPlayer;
 import net.techcable.combattag.CombatTag;
 import net.techcable.combattag.config.Punishment;
 import net.techcable.combattag.events.CombatLogEvent;
 import net.techcable.combattag.libs.NMSUtils;
-import net.techcable.techutils.Reflection;
 import net.techcable.techutils.inventory.InventoryUtils;
 import net.techcable.techutils.inventory.PlayerData;
 
-import org.bukkit.entity.Player;
+import lombok.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.lang.reflect.Field;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class NPCListener implements Listener {
